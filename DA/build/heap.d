@@ -1,0 +1,34 @@
+/home/geffencooper/Model_Development/ai8x-synthesis/sdk/DA/build/heap.o: \
+ /home/geffencooper/Model_Development/ai8x-synthesis/sdk/Libraries/CMSIS/Device/Maxim/MAX78000/Source/heap.c \
+ /home/geffencooper/gcc-arm-none-eabi-10.3-2021.10/lib/gcc/arm-none-eabi/10.3.1/include/stdint.h \
+ /home/geffencooper/gcc-arm-none-eabi-10.3-2021.10/arm-none-eabi/include/stdint.h \
+ /home/geffencooper/gcc-arm-none-eabi-10.3-2021.10/arm-none-eabi/include/machine/_default_types.h \
+ /home/geffencooper/gcc-arm-none-eabi-10.3-2021.10/arm-none-eabi/include/sys/features.h \
+ /home/geffencooper/gcc-arm-none-eabi-10.3-2021.10/arm-none-eabi/include/_newlib_version.h \
+ /home/geffencooper/gcc-arm-none-eabi-10.3-2021.10/arm-none-eabi/include/sys/_intsup.h \
+ /home/geffencooper/gcc-arm-none-eabi-10.3-2021.10/arm-none-eabi/include/sys/_stdint.h \
+ /home/geffencooper/gcc-arm-none-eabi-10.3-2021.10/arm-none-eabi/include/errno.h \
+ /home/geffencooper/gcc-arm-none-eabi-10.3-2021.10/arm-none-eabi/include/sys/errno.h \
+ /home/geffencooper/gcc-arm-none-eabi-10.3-2021.10/arm-none-eabi/include/sys/reent.h \
+ /home/geffencooper/gcc-arm-none-eabi-10.3-2021.10/arm-none-eabi/include/_ansi.h \
+ /home/geffencooper/gcc-arm-none-eabi-10.3-2021.10/arm-none-eabi/include/newlib.h \
+ /home/geffencooper/gcc-arm-none-eabi-10.3-2021.10/arm-none-eabi/include/sys/config.h \
+ /home/geffencooper/gcc-arm-none-eabi-10.3-2021.10/arm-none-eabi/include/machine/ieeefp.h \
+ /home/geffencooper/gcc-arm-none-eabi-10.3-2021.10/lib/gcc/arm-none-eabi/10.3.1/include/stddef.h \
+ /home/geffencooper/gcc-arm-none-eabi-10.3-2021.10/arm-none-eabi/include/sys/_types.h \
+ /home/geffencooper/gcc-arm-none-eabi-10.3-2021.10/arm-none-eabi/include/machine/_types.h \
+ /home/geffencooper/gcc-arm-none-eabi-10.3-2021.10/arm-none-eabi/include/sys/lock.h \
+ /home/geffencooper/gcc-arm-none-eabi-10.3-2021.10/arm-none-eabi/include/unistd.h \
+ /home/geffencooper/gcc-arm-none-eabi-10.3-2021.10/arm-none-eabi/include/sys/unistd.h \
+ /home/geffencooper/gcc-arm-none-eabi-10.3-2021.10/arm-none-eabi/include/sys/cdefs.h \
+ /home/geffencooper/gcc-arm-none-eabi-10.3-2021.10/arm-none-eabi/include/sys/types.h \
+ /home/geffencooper/gcc-arm-none-eabi-10.3-2021.10/arm-none-eabi/include/machine/endian.h \
+ /home/geffencooper/gcc-arm-none-eabi-10.3-2021.10/arm-none-eabi/include/machine/_endian.h \
+ /home/geffencooper/gcc-arm-none-eabi-10.3-2021.10/arm-none-eabi/include/sys/select.h \
+ /home/geffencooper/gcc-arm-none-eabi-10.3-2021.10/arm-none-eabi/include/sys/_sigset.h \
+ /home/geffencooper/gcc-arm-none-eabi-10.3-2021.10/arm-none-eabi/include/sys/_timeval.h \
+ /home/geffencooper/gcc-arm-none-eabi-10.3-2021.10/arm-none-eabi/include/sys/timespec.h \
+ /home/geffencooper/gcc-arm-none-eabi-10.3-2021.10/arm-none-eabi/include/sys/_timespec.h \
+ /home/geffencooper/gcc-arm-none-eabi-10.3-2021.10/arm-none-eabi/include/sys/_pthreadtypes.h \
+ /home/geffencooper/gcc-arm-none-eabi-10.3-2021.10/arm-none-eabi/include/sys/sched.h \
+ /home/geffencooper/gcc-arm-none-eabi-10.3-2021.10/arm-none-eabi/include/machine/types.h
