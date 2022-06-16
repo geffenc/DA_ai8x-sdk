@@ -111,6 +111,7 @@ void display_RGB565_img(int x_coord, int y_coord,uint32_t* cnn_buffer, int load_
 
     // Get the details of the image from the camera driver.
 	  camera_get_image(&raw, &imgLen, &w, &h);
+    printf("%d %d %d %d\n",imgLen,w,h,*raw);
 
     // if want to load to the CNN
     if(load_cnn)
@@ -140,16 +141,36 @@ void display_RGB565_img(int x_coord, int y_coord,uint32_t* cnn_buffer, int load_
     }
     //printf("%d %d %d\n", x_coord, y_coord, imgLen);
     // display the image on the LCD
-    MXC_TFT_ShowImageCameraRGB565(x_coord, y_coord, raw, h, w);
+
+    uint8_t* data = NULL;
+    // Get image line by line
+    for (int i = 0; i < h; i++) {
+
+        // Wait until camera streaming buffer is full
+        while ((data = get_camera_stream_buffer()) == NULL) {
+            if (camera_is_image_rcv()) {
+                break;
+            }
+        }
+
+        // Send one line to TFT
+        MXC_TFT_ShowImageCameraRGB565(x_coord, y_coord + i, data, w, 1);
+
+        // Release stream buffer
+        release_camera_stream_buffer();
+    }
+
+    //MXC_TFT_ShowImageCameraRGB565(x_coord, y_coord, raw, h, w);
 }
 
 /***** LCD Functions *****/
 void init_LCD()
 {
-  mxc_gpio_cfg_t tft_reset_pin = {MXC_GPIO0, MXC_GPIO_PIN_19, MXC_GPIO_FUNC_OUT, MXC_GPIO_PAD_NONE, MXC_GPIO_VSSEL_VDDIOH};
-  MXC_TFT_Init(MXC_SPI0, 1, &tft_reset_pin, NULL);
-  MXC_TFT_ClearScreen();
-  printf(ANSI_COLOR_GREEN "--> LCD Initialized" ANSI_COLOR_RESET "\n");
+   mxc_gpio_cfg_t tft_reset_pin = {MXC_GPIO0, MXC_GPIO_PIN_19, MXC_GPIO_FUNC_OUT, MXC_GPIO_PAD_NONE, MXC_GPIO_VSSEL_VDDIOH};
+   MXC_TFT_Init(MXC_SPI0, 1, &tft_reset_pin, NULL);
+   MXC_TFT_ClearScreen();
+   MXC_TFT_SetBackGroundColor(4);
+   printf(ANSI_COLOR_GREEN "--> LCD Initialized" ANSI_COLOR_RESET "\n");
 }
 
 void reset()
@@ -159,32 +180,29 @@ void reset()
 }
 
 
-void TFT_Print(char *str, int x, int y, int font, int length) 
+void TFT_Print(char *str, int x, int y, int font, int length)
 {
-  // fonts id
-  text_t text;
-  text.data = str;
-  text.len = 36;
-
-  MXC_TFT_PrintFont(x, y, font, &text, NULL);
+    // fonts id
+    text_t text;
+    text.data = str;
+    text.len = length;
+    MXC_TFT_PrintFont(x, y, font, &text, NULL);
 }
 
 
 void LCD_Camera_Setup()
 {
-    MXC_ICC_Enable(MXC_ICC0); // Enable cache
+    // Initialize TFT display.
+    init_LCD();
 
     // Initialize DMA for camera interface
     MXC_DMA_Init();
     int dma_channel = MXC_DMA_AcquireChannel();
 
-    // Initialize TFT display.
-    printf("init LCD\n");
-    init_LCD();
-
     // Initialize camera.
     printf("Init Camera.\n");
     camera_init(CAMERA_FREQ);
+
 
     // Setup the camera image dimensions, pixel format and data acquiring details.
     // four bytes because each pixel is 2 bytes, can get 2 pixels at a time
@@ -193,6 +211,7 @@ void LCD_Camera_Setup()
     {
       printf(ANSI_COLOR_RED "--> Error returned from setting up camera. Error %d" ANSI_COLOR_RESET "\n", ret);
 	  }
+
   
     MXC_TFT_SetBackGroundColor(4);
 

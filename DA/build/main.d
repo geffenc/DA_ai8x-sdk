@@ -111,4 +111,8 @@
  /home/geffencooper/Model_Development/ai8x-synthesis/sdk/Libraries/CMSIS/Device/Maxim/MAX78000/Include/wdt_regs.h \
  /home/geffencooper/Model_Development/ai8x-synthesis/sdk/Libraries/PeriphDrivers/Include/MAX78000/wut.h \
  /home/geffencooper/Model_Development/ai8x-synthesis/sdk/Libraries/CMSIS/Device/Maxim/MAX78000/Include/wut_regs.h \
- lib/Display/camera_tft_funcs.h lib/Display/color_print.h
+ lib/fonts/bitmap.h \
+ /home/geffencooper/Model_Development/ai8x-synthesis/sdk/Libraries/Boards/MAX78000/EvKit_V1/../../../MiscDrivers/Camera/camera.h \
+ /home/geffencooper/Model_Development/ai8x-synthesis/sdk/Libraries/Boards/MAX78000/EvKit_V1/../../../MiscDrivers/Camera/ov7692_regs.h \
+ /home/geffencooper/Model_Development/ai8x-synthesis/sdk/Libraries/PeriphDrivers/Include/MAX78000/dma.h \
+ lib/Display/camera_tft_funcs.h
