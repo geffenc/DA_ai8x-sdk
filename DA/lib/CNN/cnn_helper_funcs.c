@@ -168,5 +168,5 @@ void show_cnn_output(cnn_output_t* output)
 {
   memset(buff,32,TFT_BUFF_SIZE);
 //   TFT_Print(buff, 0, 0, font_1, sprintf(buff, "Class: %s", class_strings[output->output_class]));
-    TFT_Print(buff, 0, 0, font_1, sprintf(buff, "TEST"));
+    TFT_Print(buff, 0, 0, font_1, sprintf(buff, "Class: %s", class_strings[output->output_class]));
 }
