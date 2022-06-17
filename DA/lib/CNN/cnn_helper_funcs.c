@@ -46,6 +46,9 @@ char buff[TFT_BUFF_SIZE];
 volatile uint32_t cnn_time; // Stopwatch
 char* class_strings[] = {"DOG","CAT"};
 
+static area_t box = {0,0,150,30};
+
+
 // ========================================================================================= //
 // ================================ FUNCTION DEFINITIONS =================================== //
 // ========================================================================================= //
@@ -166,7 +169,14 @@ void startup_cnn()
 
 void show_cnn_output(cnn_output_t* output)
 {
-  memset(buff,32,TFT_BUFF_SIZE);
-//   TFT_Print(buff, 0, 0, font_1, sprintf(buff, "Class: %s", class_strings[output->output_class]));
-    TFT_Print(buff, 0, 0, font_1, sprintf(buff, "Class: %s", class_strings[output->output_class]));
+    static cnn_output_t last_output;
+
+    // only update text when class changes
+    if(last_output.output_class != (*output).output_class)
+    {
+        memset(buff,32,TFT_BUFF_SIZE);
+        MXC_TFT_FillRect(&box,4);
+        TFT_Print(buff, 0, 0, font_1, sprintf(buff, "Class: %s", class_strings[output->output_class]));
+    }
+    last_output.output_class = output->output_class; 
 }
