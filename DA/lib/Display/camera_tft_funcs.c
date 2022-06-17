@@ -51,6 +51,8 @@
 
 
 #define CAMERA_FREQ   (5 * 1000 * 1000)
+#define SCREEN_X 100 // image output top left corner
+#define SCREEN_Y 50 // image output top left corner
 
 // ========================================================================================= //
 // ================================== GLOBAL VARIABLES ===================================== //
@@ -59,6 +61,9 @@
 // image dimensions
 static int IMAGE_SIZE_X;
 static int IMAGE_SIZE_Y;
+uint8_t data565[128 * 2];
+static uint32_t input_0[128 * 128]; // buffer for camera image
+
 
 
 // ========================================================================================= //
@@ -110,6 +115,7 @@ void display_RGB565_img(int x_coord, int y_coord,uint32_t* cnn_buffer, int load_
     uint8_t px2;
 
     // Get the details of the image from the camera driver.
+    capture_camera_img();
 	  camera_get_image(&raw, &imgLen, &w, &h);
     printf("%d %d %d %d\n",imgLen,w,h,*raw);
 
@@ -139,28 +145,8 @@ void display_RGB565_img(int x_coord, int y_coord,uint32_t* cnn_buffer, int load_
           }
         }
     }
-    //printf("%d %d %d\n", x_coord, y_coord, imgLen);
     // display the image on the LCD
-
-    uint8_t* data = NULL;
-    // Get image line by line
-    for (int i = 0; i < h; i++) {
-
-        // Wait until camera streaming buffer is full
-        while ((data = get_camera_stream_buffer()) == NULL) {
-            if (camera_is_image_rcv()) {
-                break;
-            }
-        }
-
-        // Send one line to TFT
-        MXC_TFT_ShowImageCameraRGB565(x_coord, y_coord + i, data, w, 1);
-
-        // Release stream buffer
-        release_camera_stream_buffer();
-    }
-
-    //MXC_TFT_ShowImageCameraRGB565(x_coord, y_coord, raw, h, w);
+    MXC_TFT_ShowImageCameraRGB565(x_coord, y_coord, raw, h, w);
 }
 
 /***** LCD Functions *****/
@@ -170,7 +156,9 @@ void init_LCD()
    MXC_TFT_Init(MXC_SPI0, 1, &tft_reset_pin, NULL);
    MXC_TFT_ClearScreen();
    MXC_TFT_SetBackGroundColor(4);
+
    printf(ANSI_COLOR_GREEN "--> LCD Initialized" ANSI_COLOR_RESET "\n");
+   MXC_Delay(1000000);
 }
 
 void reset()
@@ -206,14 +194,68 @@ void LCD_Camera_Setup()
 
     // Setup the camera image dimensions, pixel format and data acquiring details.
     // four bytes because each pixel is 2 bytes, can get 2 pixels at a time
-  	int ret = camera_setup(get_image_x(), get_image_y(), PIXFORMAT_RGB565, FIFO_FOUR_BYTE, USE_DMA, dma_channel);
+  	//int ret = camera_setup(get_image_x(), get_image_y(), PIXFORMAT_RGB565, FIFO_FOUR_BYTE, USE_DMA, dma_channel);
+    int ret = camera_setup(get_image_x(), get_image_y(), PIXFORMAT_RGB565, FIFO_FOUR_BYTE, STREAMING_DMA, dma_channel);
     if (ret != STATUS_OK) 
     {
       printf(ANSI_COLOR_RED "--> Error returned from setting up camera. Error %d" ANSI_COLOR_RESET "\n", ret);
 	  }
-
-  
-    MXC_TFT_SetBackGroundColor(4);
+    //camera_write_reg(0x11, 0x1); // set camera clock prescaller to prevent streaming overflow
 
     printf(ANSI_COLOR_GREEN "--> Camera Initialized" ANSI_COLOR_RESET "\n");
+}
+
+void capture_process_camera() {
+
+	uint8_t *raw;
+	uint32_t imgLen;
+	uint32_t w, h;
+
+	int cnt = 0;
+
+	uint8_t r, g, b;
+	uint16_t rgb;
+	int j = 0;
+
+	uint8_t *data = NULL;
+	stream_stat_t *stat;
+
+	camera_start_capture_image();
+
+	// Get the details of the image from the camera driver.
+	camera_get_image(&raw, &imgLen, &w, &h);
+
+	// Get image line by line
+	for (int row = 0; row < h; row++) {
+		// Wait until camera streaming buffer is full
+		while ((data = get_camera_stream_buffer()) == NULL) {
+			if (camera_is_image_rcv()) {
+				break;
+			}
+		}
+
+		//LED_Toggle(LED2);
+#ifdef BOARD_EVKIT_V1
+			j = 128*2 - 2; // mirror on display
+#else
+		j = 0;
+#endif
+		for (int k = 0; k < 2 * w; k += 2) {
+			
+            data565[j] = data[k];
+            data565[j+1] = data[k+1];
+#ifdef BOARD_EVKIT_V1
+				j-=2; // mirror on display
+#else
+			j += 2;
+#endif
+		}
+		MXC_TFT_ShowImageCameraRGB565(SCREEN_X, SCREEN_Y + row, data565, w, 1);
+
+
+		//LED_Toggle(LED2);
+		// Release stream buffer
+		release_camera_stream_buffer();
+	}
+
 }

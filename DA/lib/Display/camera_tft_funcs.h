@@ -127,4 +127,6 @@ void reset();
     Return: none
 */
 void LCD_Camera_Setup();
+
+void capture_process_camera();
 #endif
