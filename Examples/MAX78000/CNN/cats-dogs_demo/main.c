@@ -73,7 +73,7 @@
 #define TFT_BUFF_SIZE   30    // TFT buffer size
 
 #ifdef BOARD_EVKIT_V1
-int image_bitmap_1 = ADI_256_bmp;
+//int image_bitmap_1 = ADI_256_bmp;
 int image_bitmap_2 = logo_white_bg_darkgrey_bmp;
 int font_1 = urw_gothic_12_white_bg_grey;
 int font_2 = urw_gothic_13_white_bg_grey;
@@ -368,7 +368,7 @@ int main(void) {
     mxc_gpio_cfg_t tft_reset_pin = {MXC_GPIO0, MXC_GPIO_PIN_19, MXC_GPIO_FUNC_OUT, MXC_GPIO_PAD_NONE, MXC_GPIO_VSSEL_VDDIOH};
     MXC_TFT_Init(MXC_SPI0, 1, &tft_reset_pin, NULL);
     MXC_TFT_ClearScreen();
-    MXC_TFT_ShowImage(0, 0, image_bitmap_1);
+    MXC_TFT_ShowImage(0, 0, image_bitmap_2);
 #endif
 #ifdef BOARD_FTHR_REVA
     /* Initialize TFT display */
