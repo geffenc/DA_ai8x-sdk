@@ -128,5 +128,12 @@ void reset();
 */
 void LCD_Camera_Setup();
 
-void capture_process_camera();
+/*
+    Description: This function grabs frames from the camera in RGB888
+                 and displays to the LCD in RGB565. It also takes in
+                 optional arguments to load the data into the CNN buffer.
+    Parameters: none
+    Return: none
+*/
+void capture_process_camera(int x_coord, int y_coord, uint32_t* cnn_buffer, int load_cnn);
 #endif

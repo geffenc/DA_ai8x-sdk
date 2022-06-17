@@ -50,9 +50,7 @@
 #include "color_print.h"
 
 
-#define CAMERA_FREQ   (5 * 1000 * 1000)
-#define SCREEN_X 100 // image output top left corner
-#define SCREEN_Y 50 // image output top left corner
+#define CAMERA_FREQ   (10 * 1000 * 1000)
 
 // ========================================================================================= //
 // ================================== GLOBAL VARIABLES ===================================== //
@@ -61,8 +59,9 @@
 // image dimensions
 static int IMAGE_SIZE_X;
 static int IMAGE_SIZE_Y;
+
+// buffer for LCD (RGB565)
 uint8_t data565[128 * 2];
-static uint32_t input_0[128 * 128]; // buffer for camera image
 
 
 
@@ -193,67 +192,82 @@ void LCD_Camera_Setup()
 
 
     // Setup the camera image dimensions, pixel format and data acquiring details.
-    // four bytes because each pixel is 2 bytes, can get 2 pixels at a time
   	//int ret = camera_setup(get_image_x(), get_image_y(), PIXFORMAT_RGB565, FIFO_FOUR_BYTE, USE_DMA, dma_channel);
-    int ret = camera_setup(get_image_x(), get_image_y(), PIXFORMAT_RGB565, FIFO_FOUR_BYTE, STREAMING_DMA, dma_channel);
+    int ret = camera_setup(get_image_x(), get_image_y(), PIXFORMAT_RGB888, FIFO_THREE_BYTE, STREAMING_DMA, dma_channel);
     if (ret != STATUS_OK) 
     {
       printf(ANSI_COLOR_RED "--> Error returned from setting up camera. Error %d" ANSI_COLOR_RESET "\n", ret);
 	  }
-    //camera_write_reg(0x11, 0x1); // set camera clock prescaller to prevent streaming overflow
+    camera_write_reg(0x11, 0x1); // set camera clock prescaller to prevent streaming overflow
 
     printf(ANSI_COLOR_GREEN "--> Camera Initialized" ANSI_COLOR_RESET "\n");
 }
 
-void capture_process_camera() {
-
+void capture_process_camera(int x_coord, int y_coord, uint32_t* cnn_buffer, int load_cnn)
+{
+  // camera frame information
 	uint8_t *raw;
 	uint32_t imgLen;
 	uint32_t w, h;
 
+  // index for CNN buffer
 	int cnt = 0;
 
+  // used for converting formats
 	uint8_t r, g, b;
 	uint16_t rgb;
 	int j = 0;
 
 	uint8_t *data = NULL;
-	stream_stat_t *stat;
 
+  // Get the details of the image from the camera driver.
 	camera_start_capture_image();
-
-	// Get the details of the image from the camera driver.
 	camera_get_image(&raw, &imgLen, &w, &h);
 
 	// Get image line by line
-	for (int row = 0; row < h; row++) {
+	for (int row = 0; row < h; row++) 
+  {
 		// Wait until camera streaming buffer is full
-		while ((data = get_camera_stream_buffer()) == NULL) {
-			if (camera_is_image_rcv()) {
+		while ((data = get_camera_stream_buffer()) == NULL) 
+    {
+			if (camera_is_image_rcv())
+      {
 				break;
 			}
 		}
 
-		//LED_Toggle(LED2);
 #ifdef BOARD_EVKIT_V1
 			j = 128*2 - 2; // mirror on display
 #else
 		j = 0;
 #endif
-		for (int k = 0; k < 2 * w; k += 2) {
-			
-            data565[j] = data[k];
-            data565[j+1] = data[k+1];
+		for (int k = 0; k < 4 * w; k += 4) 
+    {
+			// data format: 0x00bbggrr
+			r = data[k];
+			g = data[k + 1];
+			b = data[k + 2];
+			//skip k+3
+
+      if(load_cnn)
+      {
+        // change the range from [0,255] to [-128,127] and store in buffer for CNN
+        cnn_buffer[cnt++] = ((b << 16) | (g << 8) | r) ^ 0x00808080;
+      }
+
+			// convert to RGB656 for display
+			rgb = ((r & 0b11111000) << 8) | ((g & 0b11111100) << 3) | (b >> 3);
+      
+			data565[j] = (rgb >> 8) & 0xFF;
+			data565[j + 1] = rgb & 0xFF;
 #ifdef BOARD_EVKIT_V1
 				j-=2; // mirror on display
 #else
 			j += 2;
 #endif
 		}
-		MXC_TFT_ShowImageCameraRGB565(SCREEN_X, SCREEN_Y + row, data565, w, 1);
+		MXC_TFT_ShowImageCameraRGB565(x_coord, y_coord + row, data565, w, 1);
 
-
-		//LED_Toggle(LED2);
 		// Release stream buffer
 		release_camera_stream_buffer();
 	}

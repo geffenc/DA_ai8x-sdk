@@ -12,16 +12,22 @@
 
 // personal
 #include "camera_tft_funcs.h"
+#include "cnn_helper_funcs.h"
+
 
 
 #define SCREEN_W 128 // image output width
 #define SCREEN_H 128 // image output height
+#define SCREEN_X 100 // image output top left corner
+#define SCREEN_Y 50 // image output top left corner
 #define TFT_BUFF_SIZE   30    // TFT buffer size
 
-char buff[TFT_BUFF_SIZE];
 
 int main()
 {
+    int font_1 = urw_gothic_12_white_bg_grey;
+    char buff[TFT_BUFF_SIZE];
+    printf("main\n");
     /* Enable cache */
 	MXC_ICC_Enable(MXC_ICC0);
 
@@ -37,11 +43,21 @@ int main()
     // MXC_TFT_SetBackGroundColor(4);
     // memset(buff, 32, TFT_BUFF_SIZE);
     // TFT_Print(buff, 55, 90, font_1, sprintf(buff, "Cats-vs-Dogs Demo"));
-
+    printf("start up cnn\n");
+    startup_cnn();
+    cnn_output_t output;
+    MXC_TFT_SetBackGroundColor(4);
+    memset(buff,32,TFT_BUFF_SIZE);
+    //TFT_Print(buff, 0, 0, font_1, sprintf(buff, "TEST"));
+    printf("loop\n");
     while (1)
     {
-        capture_process_camera();
+        //capture_process_camera(SCREEN_X,SCREEN_Y,NULL,false);
         // display_RGB565_img(0,0,NULL,false);
+
+        // call a run cnn helper func here
+        run_cnn(&output);
+        //show_cnn_output(&output);
     }
     
 }
