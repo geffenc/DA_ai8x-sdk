@@ -29,6 +29,8 @@ int main()
 	MXC_SYS_Clock_Select(MXC_SYS_CLOCK_IPO);
 	SystemCoreClockUpdate();
 
+    MXC_Delay(SEC(2)); // Let debugger interrupt if needed
+
     // initialize LCD and camera
     set_image_dimensions(SCREEN_W,SCREEN_H);
     LCD_Camera_Setup();

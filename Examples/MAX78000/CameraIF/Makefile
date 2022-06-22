@@ -52,10 +52,9 @@ COMPILER=GCC
 # Specify the board used
 ifeq "$(BOARD)" ""
 BOARD=EvKit_V1
+#BOARD=FTHR_RevA
 endif
 
-# Only Enable if 2.4" TFT is connected and used in the example
-PROJ_CFLAGS += -DENABLE_TFT
 
 # Enable the connected camera
 ifeq "$(CAMERA)" ""

@@ -15,6 +15,8 @@ pySerial
 opencv-python
 Pillow
 
+A requirements.txt can be found in this directory.  Use `pip install -r requirements.txt` to install all dependencies.
+
 ## Example Usage
 
 sudo python3 grab_image.py COM42 921600

@@ -23,19 +23,19 @@ typedef int16_t q15_t;
 
 /*
   SUMMARY OF OPS
-  Hardware: 59,270,528 ops (58,523,904 macc; 746,624 comp; 0 add; 0 mul; 0 bitwise)
-    Layer 0: 3,670,016 ops (3,538,944 macc; 131,072 comp; 0 add; 0 mul; 0 bitwise)
-    Layer 1: 9,568,256 ops (9,437,184 macc; 131,072 comp; 0 add; 0 mul; 0 bitwise)
-    Layer 2: 4,915,200 ops (4,718,592 macc; 196,608 comp; 0 add; 0 mul; 0 bitwise)
-    Layer 3: 9,502,720 ops (9,437,184 macc; 65,536 comp; 0 add; 0 mul; 0 bitwise)
-    Layer 4: 4,816,896 ops (4,718,592 macc; 98,304 comp; 0 add; 0 mul; 0 bitwise)
-    Layer 5: 9,469,952 ops (9,437,184 macc; 32,768 comp; 0 add; 0 mul; 0 bitwise)
-    Layer 6: 4,767,744 ops (4,718,592 macc; 49,152 comp; 0 add; 0 mul; 0 bitwise)
-    Layer 7: 9,453,568 ops (9,437,184 macc; 16,384 comp; 0 add; 0 mul; 0 bitwise)
-    Layer 8: 2,379,776 ops (2,359,296 macc; 20,480 comp; 0 add; 0 mul; 0 bitwise)
-    Layer 9: 594,944 ops (589,824 macc; 5,120 comp; 0 add; 0 mul; 0 bitwise)
-    Layer 10: 131,200 ops (131,072 macc; 128 comp; 0 add; 0 mul; 0 bitwise)
-    Layer 11: 256 ops (256 macc; 0 comp; 0 add; 0 mul; 0 bitwise)
+  Hardware: 118,541,056 ops (117,047,808 macc; 1,493,248 comp; 0 add; 0 mul; 0 bitwise)
+    Layer 0: 7,340,032 ops (7,077,888 macc; 262,144 comp; 0 add; 0 mul; 0 bitwise)
+    Layer 1: 19,136,512 ops (18,874,368 macc; 262,144 comp; 0 add; 0 mul; 0 bitwise)
+    Layer 2: 9,830,400 ops (9,437,184 macc; 393,216 comp; 0 add; 0 mul; 0 bitwise)
+    Layer 3: 19,005,440 ops (18,874,368 macc; 131,072 comp; 0 add; 0 mul; 0 bitwise)
+    Layer 4: 9,633,792 ops (9,437,184 macc; 196,608 comp; 0 add; 0 mul; 0 bitwise)
+    Layer 5: 18,939,904 ops (18,874,368 macc; 65,536 comp; 0 add; 0 mul; 0 bitwise)
+    Layer 6: 9,535,488 ops (9,437,184 macc; 98,304 comp; 0 add; 0 mul; 0 bitwise)
+    Layer 7: 18,907,136 ops (18,874,368 macc; 32,768 comp; 0 add; 0 mul; 0 bitwise)
+    Layer 8: 4,759,552 ops (4,718,592 macc; 40,960 comp; 0 add; 0 mul; 0 bitwise)
+    Layer 9: 1,189,888 ops (1,179,648 macc; 10,240 comp; 0 add; 0 mul; 0 bitwise)
+    Layer 10: 262,400 ops (262,144 macc; 256 comp; 0 add; 0 mul; 0 bitwise)
+    Layer 11: 512 ops (512 macc; 0 comp; 0 add; 0 mul; 0 bitwise)
 
   RESOURCE USAGE
   Weight memory: 278,424 bytes out of 442,368 bytes total (63%)

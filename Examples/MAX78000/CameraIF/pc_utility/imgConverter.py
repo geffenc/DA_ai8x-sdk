@@ -1,11 +1,5 @@
-import time
-import os
-import sys
-import string
-import sys
-import zlib
 import struct
-from PIL import Image, ImageTk
+from PIL import Image
 
 def swap32(i):
     return struct.unpack("<I", struct.pack(">I", i))[0]

@@ -61,41 +61,93 @@
 #include "utils.h"
 #include "dma.h"
 
-#ifdef ENABLE_TFT  // defined in make file
-    #ifdef EvKit_V1
-#include "tft.h"
+
+// Configuration options
+// ------------------------
+//#define ENABLE_TFT // Comment out to disable TFT and send image to serial port instead.
+//#define STREAM_ENABLE
+/* If enabled, camera is setup in streaming mode to send the image
+line by line to TFT, or serial port as they are captured. Otherwise, it buffers the entire
+image first and then sends to TFT or serial port.
+With serial port set at 900kbps, it can stream for up to 80x80 with OV5642 camera in 
+stream mode, or 176x144 when stream mode is disabled.  It can display on TFT up to 176x144 
+if stream mode is disabled, or 320x240 if enabled
+*/
+#define BUTTON
+/*
+If BUTTON is defined, you'll need to push PB1 to capture an image frame.  Otherwise, images
+will be captured continuously.
+*/
+
+// ------------------------
+
+/*
+Compiler definitions...  These configure TFT and camera settings based on the options above
+*/
+#ifdef ENABLE_TFT
+
+    #ifdef BOARD_EVKIT_V1
+    #include "tft_ssd2119.h"
     #endif
 
-    #ifdef FTHR_RevA
-#include "tft_fthr.h"
+    #ifdef BOARD_FTHR_REVA
+    #include "tft_ili9341.h"
     #endif
+
 #endif
 
 #define CAMERA_FREQ (10 * 1000 * 1000)
 
 #if defined(CAMERA_HM01B0)
-#define IMAGE_XRES  324/2
-#define IMAGE_YRES  244/2
-#define CAMERA_MONO
-//#define STREAM_ENABLE
+    #define CAMERA_MONO
+
+    #ifdef STREAM_ENABLE
+    #define IMAGE_XRES  324/2
+    #define IMAGE_YRES  244/2
+
+    #else
+    #define IMAGE_XRES 80
+    #define IMAGE_YRES 80
+
+    #endif
 #endif
 
 #if defined(CAMERA_HM0360)
-#define IMAGE_XRES  320
-#define IMAGE_YRES  240
-#define CAMERA_MONO
-//#define STREAM_ENABLE
+    #define CAMERA_MONO
+
+    #ifdef STREAM_ENABLE
+    #define IMAGE_XRES  320
+    #define IMAGE_YRES  240
+
+    #else
+    #define IMAGE_XRES 80
+    #define IMAGE_YRES 80
+
+    #endif
 #endif
 
 #if defined(CAMERA_OV7692) || defined(CAMERA_OV5642)
-#define IMAGE_XRES  320
-#define IMAGE_YRES  240
-#define STREAM_ENABLE  // If enabled, camera is setup in streaming mode to send the image line by line
-// to TFT, or serial port as they are captured. Otherwise, it buffers the entire image first and
-// then sends to TFT or serial port.
-// With serial port set at 900kbps, it can stream for up to 80x80 with OV5642 camera in stream mode.
-// or 176x144 when stream mode is disabled.
-// It can display on TFT up to 176x144 if stream mode is disabled, or 320x240 if enabled.
+
+    #ifdef ENABLE_TFT
+        #ifdef STREAM_ENABLE
+        #define IMAGE_XRES  320
+        #define IMAGE_YRES  240
+        
+        #else
+        #define IMAGE_XRES  176
+        #define IMAGE_YRES  144
+        #endif
+
+    #else
+        #ifdef STREAM_ENABLE
+            #define IMAGE_XRES 80
+            #define IMAGE_YRES 80
+        #else
+            #define IMAGE_XRES 176
+            #define IMAGE_YRES 144
+        #endif
+
+    #endif
 #endif
 
 #define CON_BAUD 115200*8   //UART baudrate used for sending data to PC, use max 921600 for serial stream
@@ -233,7 +285,7 @@ int main(void)
     // Setup the camera image dimensions, pixel format and data acquiring details.
 #ifndef STREAM_ENABLE
 #ifndef CAMERA_MONO
-    ret = camera_setup(IMAGE_XRES, IMAGE_YRES, PIXFORMAT_RGB565, FIFO_FOUR_BYTE, USE_DMA, dma_channel); // RGB565
+    ret = camera_setup(128, 128, PIXFORMAT_RGB888, FIFO_THREE_BYTE, USE_DMA, dma_channel); // RGB565
 #else
     ret = camera_setup(IMAGE_XRES, IMAGE_YRES, PIXFORMAT_BAYER, FIFO_FOUR_BYTE, USE_DMA, dma_channel); // Mono
 #endif
@@ -276,6 +328,9 @@ int main(void)
 
     // Start capturing a first camera image frame.
     printf("Starting\n");
+#ifdef BUTTON
+    while(!PB_Get(0));
+#endif
     camera_start_capture_image();
 
     while (1) {
@@ -289,6 +344,9 @@ int main(void)
 
             // Prepare for another frame capture.
             LED_Toggle(LED1);
+        #ifdef BUTTON
+            while(!PB_Get(0));
+        #endif            
             camera_start_capture_image();
         }
     }
