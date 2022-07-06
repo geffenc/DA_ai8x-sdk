@@ -13,6 +13,7 @@
 // personal
 #include "camera_tft_funcs.h"
 #include "cnn_helper_funcs.h"
+#include "pb.h"
 
 
 #define SCREEN_W 128 // image output width
@@ -40,9 +41,8 @@ int main()
     cnn_output_t output;
     while (1)
     {
-        //capture_process_camera(SCREEN_X,SCREEN_Y,NULL,false);
-        // display_RGB565_img(0,0,NULL,false);
-
+        while (!PB_Get(0));
+        
         // call a run cnn helper func here
         run_cnn(&output);
         show_cnn_output(&output);

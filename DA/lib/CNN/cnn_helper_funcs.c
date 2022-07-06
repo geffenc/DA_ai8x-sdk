@@ -24,8 +24,17 @@
 #define SCREEN_X 100 // image output top left corner
 #define SCREEN_Y 50 // image output top left corner
 #define TFT_BUFF_SIZE   30 // TFT text buffer size
+
+#ifdef CD
 #define NUM_CLASSES 2 // number of output classes
 #define NUM_OUTPUTS 2 // number of output neurons
+#endif
+
+#ifdef OFFICE
+#define NUM_CLASSES 5 // number of output classes
+#define NUM_OUTPUTS 5 // number of output neurons
+#endif
+
 #define CNN_INPUT_SIZE 16384 // data is 128 x 128 px = 16,384 px each word is 0RGB, byte for each
 
 #define BB_COLOR YELLOW // the bounding box color
@@ -44,9 +53,16 @@ int font_1 = urw_gothic_12_white_bg_grey;
 
 char buff[TFT_BUFF_SIZE];
 volatile uint32_t cnn_time; // Stopwatch
-char* class_strings[] = {"DOG","CAT"};
 
-static area_t box = {0,0,150,30};
+#ifdef CD
+char* class_strings[] = {"DOG","CAT"};
+#endif
+
+#ifdef OFFICE
+char* class_strings[] = {"KEYBOARD","PEN","BACKPACK","MUG","LAPTOP"};
+#endif
+
+static area_t box = {0,0,250,30};
 
 
 // ========================================================================================= //
@@ -94,7 +110,7 @@ uint32_t* get_cnn_buffer()
 // this function does a forward pass through the CNN 
 void run_cnn(cnn_output_t* output)
 {
-    int class_sums[] = {0,0,0,0};
+    int class_sums[] = {0,0,0,0,0};
     int digs, tens; // format probability
     int max = 0; // the current highest class probability
     int max_i = 0; // the class with the highest probability
@@ -143,6 +159,7 @@ void run_cnn(cnn_output_t* output)
         printf("Approximate inference time: %u us\n\n", cnn_time);
     }
     output->output_class = max_i;
+    output->percent = max;
     printf("CLASS: %s\n",class_strings[max_i]);
     printf("\033[0;0f");
 }
@@ -172,11 +189,11 @@ void show_cnn_output(cnn_output_t* output)
     static cnn_output_t last_output;
 
     // only update text when class changes
-    if(last_output.output_class != (*output).output_class)
-    {
+    // if(last_output.output_class != (*output).output_class)
+    // {
         memset(buff,32,TFT_BUFF_SIZE);
         MXC_TFT_FillRect(&box,4);
-        TFT_Print(buff, 0, 0, font_1, sprintf(buff, "Class: %s", class_strings[output->output_class]));
-    }
-    last_output.output_class = output->output_class; 
+        TFT_Print(buff, 0, 0, font_1, sprintf(buff, "Class: %s (%d %%)", class_strings[output->output_class], output->percent));
+    // }
+    // last_output.output_class = output->output_class; 
 }

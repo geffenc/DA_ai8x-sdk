@@ -9,18 +9,33 @@
 
 extern char* class_strings[];
 
-// this is the class output types
+#define CD
+
+#ifdef CD
 typedef enum
 {
     DOG=0,
     CAT
 } output_classes_t;
+#endif
+
+#ifdef OFFICE
+typedef enum
+{
+    KEYBOARD=0,
+    PEN,
+    BACKPACK,
+    MUG,
+    LAPTOP
+} output_classes_t;
+#endif
 
 // this struct stores the output information from the CNN
 // we may want to add bounding box variables later
 typedef struct 
 {
     output_classes_t output_class;
+    uint8_t percent;
 }cnn_output_t;
 
 

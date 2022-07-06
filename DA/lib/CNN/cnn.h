@@ -6,7 +6,7 @@
 **************************************************************************************************/
 
 /*
- * This header file was automatically generated for the cats_and_dogs network from a template.
+ * This header file was automatically generated for the cats_and_dogs_DA network from a template.
  * Please do not edit; instead, edit the template and regenerate.
  */
 
@@ -23,7 +23,7 @@ typedef int16_t q15_t;
 
 /*
   SUMMARY OF OPS
-  Hardware: 47,526,784 ops (46,809,344 macc; 717,440 comp; 0 add; 0 mul; 0 bitwise)
+  Hardware: 47,493,824 ops (46,776,448 macc; 717,376 comp; 0 add; 0 mul; 0 bitwise)
     Layer 0: 3,670,016 ops (3,538,944 macc; 131,072 comp; 0 add; 0 mul; 0 bitwise)
     Layer 1: 9,568,256 ops (9,437,184 macc; 131,072 comp; 0 add; 0 mul; 0 bitwise)
     Layer 2: 4,915,200 ops (4,718,592 macc; 196,608 comp; 0 add; 0 mul; 0 bitwise)
@@ -34,12 +34,12 @@ typedef int16_t q15_t;
     Layer 7: 2,367,488 ops (2,359,296 macc; 8,192 comp; 0 add; 0 mul; 0 bitwise)
     Layer 8: 600,064 ops (589,824 macc; 10,240 comp; 0 add; 0 mul; 0 bitwise)
     Layer 9: 150,016 ops (147,456 macc; 2,560 comp; 0 add; 0 mul; 0 bitwise)
-    Layer 10: 65,664 ops (65,536 macc; 128 comp; 0 add; 0 mul; 0 bitwise)
-    Layer 11: 256 ops (256 macc; 0 comp; 0 add; 0 mul; 0 bitwise)
+    Layer 10: 32,832 ops (32,768 macc; 64 comp; 0 add; 0 mul; 0 bitwise)
+    Layer 11: 128 ops (128 macc; 0 comp; 0 add; 0 mul; 0 bitwise)
 
   RESOURCE USAGE
-  Weight memory: 120,728 bytes out of 442,368 bytes total (27%)
-  Bias memory:   338 bytes out of 2,048 bytes total (17%)
+  Weight memory: 87,832 bytes out of 442,368 bytes total (20%)
+  Bias memory:   274 bytes out of 2,048 bytes total (13%)
 */
 
 /* Number of outputs for this network */
