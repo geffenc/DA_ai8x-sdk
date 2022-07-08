@@ -59,7 +59,7 @@ char* class_strings[] = {"DOG","CAT"};
 #endif
 
 #ifdef OFFICE
-char* class_strings[] = {"KEYBOARD","PEN","BACKPACK","MUG","LAPTOP"};
+char* class_strings[] = {"KEYBOARD","MOUSE","BACKPACK","MUG","MONITOR"};
 #endif
 
 static area_t box = {0,0,250,30};

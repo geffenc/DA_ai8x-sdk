@@ -9,7 +9,7 @@
 
 extern char* class_strings[];
 
-#define CD
+#define OFFICE
 
 #ifdef CD
 typedef enum
@@ -23,10 +23,10 @@ typedef enum
 typedef enum
 {
     KEYBOARD=0,
-    PEN,
+    MOUSE,
     BACKPACK,
     MUG,
-    LAPTOP
+    MONITOR
 } output_classes_t;
 #endif
 
