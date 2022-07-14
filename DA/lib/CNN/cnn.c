@@ -32,8 +32,8 @@
 * ownership rights.
 *******************************************************************************/
 
-// office_DA_w_aug
-// Created using ai8xize.py --verbose --log --test-dir sdk/Examples/MAX78000/CNN --prefix office_DA_w_aug --checkpoint-file ../ai8x-training/jupyter_logging/dcd_train_adv___2022.07.11-121144/officeclassifier_qat_best-q.pth.tar --config-file networks/classifier.yaml --device MAX78000 --softmax --compact-data --mexpress --timer 0 --fifo --display-checkpoint
+// office_DA_k8
+// Created using ai8xize.py --verbose --log --test-dir sdk/Examples/MAX78000/CNN --prefix office_DA_k8 --checkpoint-file ../ai8x-training/jupyter_logging/dcd_train_adv_k8run3___2022.07.14-151603/officeclassifier_qat_best-q.pth.tar --config-file networks/classifier.yaml --device MAX78000 --softmax --compact-data --mexpress --timer 0 --fifo --display-checkpoint
 
 // DO NOT EDIT - regenerate this file instead!
 
@@ -579,7 +579,6 @@ int cnn_configure(void)
   *((volatile uint32_t *) 0x50100a20) = 0x0000f800; // Layer control 2
   *((volatile uint32_t *) 0x50100620) = 0x00c001b8; // Mask offset and count
   *((volatile uint32_t *) 0x501006a0) = 0x0000001f; // TRAM ptr max
-  *((volatile uint32_t *) 0x501007a0) = 0x00022000; // Post processing register
   *((volatile uint32_t *) 0x50100720) = 0xffffffff; // Mask and processor enables
 
   // Layer 4 quadrant 1
@@ -594,7 +593,6 @@ int cnn_configure(void)
   *((volatile uint32_t *) 0x50500a20) = 0x0000f800; // Layer control 2
   *((volatile uint32_t *) 0x50500620) = 0x00c001b8; // Mask offset and count
   *((volatile uint32_t *) 0x505006a0) = 0x0000001f; // TRAM ptr max
-  *((volatile uint32_t *) 0x505007a0) = 0x00022000; // Post processing register
 
   // Layer 4 quadrant 2
   *((volatile uint32_t *) 0x50900020) = 0x00010041; // Rows
@@ -608,7 +606,7 @@ int cnn_configure(void)
   *((volatile uint32_t *) 0x50900a20) = 0x0000f800; // Layer control 2
   *((volatile uint32_t *) 0x50900620) = 0x00c001b8; // Mask offset and count
   *((volatile uint32_t *) 0x509006a0) = 0x0000001f; // TRAM ptr max
-  *((volatile uint32_t *) 0x509007a0) = 0x00023045; // Post processing register
+  *((volatile uint32_t *) 0x509007a0) = 0x00001045; // Post processing register
 
   // Layer 4 quadrant 3
   *((volatile uint32_t *) 0x50d00020) = 0x00010041; // Rows
@@ -622,7 +620,6 @@ int cnn_configure(void)
   *((volatile uint32_t *) 0x50d00a20) = 0x0000f800; // Layer control 2
   *((volatile uint32_t *) 0x50d00620) = 0x00c001b8; // Mask offset and count
   *((volatile uint32_t *) 0x50d006a0) = 0x0000001f; // TRAM ptr max
-  *((volatile uint32_t *) 0x50d007a0) = 0x00022000; // Post processing register
 
   // Layer 5 quadrant 0
   *((volatile uint32_t *) 0x50100024) = 0x00010021; // Rows
@@ -839,7 +836,7 @@ int cnn_configure(void)
   *((volatile uint32_t *) 0x50100a34) = 0x0001f800; // Layer control 2
   *((volatile uint32_t *) 0x50100634) = 0x08c00ab8; // Mask offset and count
   *((volatile uint32_t *) 0x501006b4) = 0x00000003; // TRAM ptr max
-  *((volatile uint32_t *) 0x501007b4) = 0x00024000; // Post processing register
+  *((volatile uint32_t *) 0x501007b4) = 0x00022000; // Post processing register
   *((volatile uint32_t *) 0x50100734) = 0xffffffff; // Mask and processor enables
 
   // Layer 9 quadrant 1
@@ -854,7 +851,7 @@ int cnn_configure(void)
   *((volatile uint32_t *) 0x50500a34) = 0x0001f800; // Layer control 2
   *((volatile uint32_t *) 0x50500634) = 0x08c00ab8; // Mask offset and count
   *((volatile uint32_t *) 0x505006b4) = 0x00000003; // TRAM ptr max
-  *((volatile uint32_t *) 0x505007b4) = 0x00024000; // Post processing register
+  *((volatile uint32_t *) 0x505007b4) = 0x00022000; // Post processing register
   *((volatile uint32_t *) 0x50500734) = 0xffffffff; // Mask and processor enables
 
   // Layer 9 quadrant 2
@@ -869,7 +866,7 @@ int cnn_configure(void)
   *((volatile uint32_t *) 0x50900a34) = 0x0001f800; // Layer control 2
   *((volatile uint32_t *) 0x50900634) = 0x08c00ab8; // Mask offset and count
   *((volatile uint32_t *) 0x509006b4) = 0x00000003; // TRAM ptr max
-  *((volatile uint32_t *) 0x509007b4) = 0x00024000; // Post processing register
+  *((volatile uint32_t *) 0x509007b4) = 0x00022000; // Post processing register
   *((volatile uint32_t *) 0x50900734) = 0xffffffff; // Mask and processor enables
 
   // Layer 9 quadrant 3
@@ -884,7 +881,7 @@ int cnn_configure(void)
   *((volatile uint32_t *) 0x50d00a34) = 0x0001f800; // Layer control 2
   *((volatile uint32_t *) 0x50d00634) = 0x08c00ab8; // Mask offset and count
   *((volatile uint32_t *) 0x50d006b4) = 0x00000003; // TRAM ptr max
-  *((volatile uint32_t *) 0x50d007b4) = 0x00025040; // Post processing register
+  *((volatile uint32_t *) 0x50d007b4) = 0x00023040; // Post processing register
   *((volatile uint32_t *) 0x50d00734) = 0xffffffff; // Mask and processor enables
 
   // Layer 10 quadrant 0
@@ -943,7 +940,7 @@ int cnn_configure(void)
   *((volatile uint32_t *) 0x50100a3c) = 0x0001f801; // Layer control 2
   *((volatile uint32_t *) 0x5010063c) = 0xa0e0a4d8; // Mask offset and count
   *((volatile uint32_t *) 0x5010013c) = 0x00000100; // 1D
-  *((volatile uint32_t *) 0x501007bc) = 0x00024000; // Post processing register
+  *((volatile uint32_t *) 0x501007bc) = 0x00022000; // Post processing register
   *((volatile uint32_t *) 0x5010073c) = 0xffffffff; // Mask and processor enables
 
   // Layer 11 quadrant 1
@@ -954,7 +951,7 @@ int cnn_configure(void)
   *((volatile uint32_t *) 0x50500a3c) = 0x0001f801; // Layer control 2
   *((volatile uint32_t *) 0x5050063c) = 0xa0e0a4d8; // Mask offset and count
   *((volatile uint32_t *) 0x5050013c) = 0x00000100; // 1D
-  *((volatile uint32_t *) 0x505007bc) = 0x00025000; // Post processing register
+  *((volatile uint32_t *) 0x505007bc) = 0x00023000; // Post processing register
   *((volatile uint32_t *) 0x5050073c) = 0xffffffff; // Mask and processor enables
 
   // Layer 11 quadrant 2
@@ -965,7 +962,7 @@ int cnn_configure(void)
   *((volatile uint32_t *) 0x50900a3c) = 0x0001f801; // Layer control 2
   *((volatile uint32_t *) 0x5090063c) = 0xa0e0a4d8; // Mask offset and count
   *((volatile uint32_t *) 0x5090013c) = 0x00000100; // 1D
-  *((volatile uint32_t *) 0x509007bc) = 0x00024000; // Post processing register
+  *((volatile uint32_t *) 0x509007bc) = 0x00022000; // Post processing register
   *((volatile uint32_t *) 0x5090073c) = 0xffffffff; // Mask and processor enables
 
   // Layer 11 quadrant 3
@@ -976,7 +973,7 @@ int cnn_configure(void)
   *((volatile uint32_t *) 0x50d00a3c) = 0x0001f801; // Layer control 2
   *((volatile uint32_t *) 0x50d0063c) = 0xa0e0a4d8; // Mask offset and count
   *((volatile uint32_t *) 0x50d0013c) = 0x00000100; // 1D
-  *((volatile uint32_t *) 0x50d007bc) = 0x00024000; // Post processing register
+  *((volatile uint32_t *) 0x50d007bc) = 0x00022000; // Post processing register
   *((volatile uint32_t *) 0x50d0073c) = 0xffffffff; // Mask and processor enables
 
   // Layer 12 quadrant 0
