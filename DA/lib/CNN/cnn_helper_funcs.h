@@ -9,7 +9,7 @@
 
 extern char* class_strings[];
 
-#define OFFICE
+#define ASL
 
 #ifdef CD
 typedef enum
@@ -27,6 +27,13 @@ typedef enum
     BACKPACK,
     MUG,
     MONITOR
+} output_classes_t;
+#endif
+
+#ifdef ASL
+typedef enum
+{
+    M=0,S,T,L,H,NOTHING,J,N,SPACE,K,B,I,C,A,O,G,Y,U,X,D,R,E,W,V,P,F,Q,DEL,Z
 } output_classes_t;
 #endif
 

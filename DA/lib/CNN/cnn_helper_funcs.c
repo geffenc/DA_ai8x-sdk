@@ -35,6 +35,11 @@
 #define NUM_OUTPUTS 5 // number of output neurons
 #endif
 
+#ifdef ASL
+#define NUM_CLASSES 29 // number of output classes
+#define NUM_OUTPUTS 29 // number of output neurons
+#endif
+
 #define CNN_INPUT_SIZE 16384 // data is 128 x 128 px = 16,384 px each word is 0RGB, byte for each
 
 #define BB_COLOR YELLOW // the bounding box color
@@ -60,6 +65,10 @@ char* class_strings[] = {"DOG","CAT"};
 
 #ifdef OFFICE
 char* class_strings[] = {"KEYBOARD","MOUSE","BACKPACK","MUG","MONITOR"};
+#endif
+
+#ifdef ASL
+char* class_strings[] = {"M","S","T","L","H","NOTHING","J","N","SPACE","K","B","I","C","A","O","G","Y","U","X","D","R","E","W","V","P","F","Q","DEL","Z"};
 #endif
 
 static area_t box = {0,0,250,30};
@@ -110,7 +119,7 @@ uint32_t* get_cnn_buffer()
 // this function does a forward pass through the CNN 
 void run_cnn(cnn_output_t* output)
 {
-    int class_sums[] = {0,0,0,0,0};
+    int class_sums[] = {0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0};
     int digs, tens; // format probability
     int max = 0; // the current highest class probability
     int max_i = 0; // the class with the highest probability
