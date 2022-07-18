@@ -45,8 +45,7 @@
 #include "tft_ssd2119.h"
 #include "camera.h"
 #include "mxc.h"
-//#include "cnn.h"
-//#include "cnn_helper_funcs.h"
+#include "bitmap.h"
 #include "color_print.h"
 
 
@@ -59,6 +58,7 @@
 // image dimensions
 static int IMAGE_SIZE_X;
 static int IMAGE_SIZE_Y;
+int font_1 = urw_gothic_12_white_bg_grey;
 
 // buffer for LCD (RGB565)
 uint8_t data565[128 * 2];
@@ -272,4 +272,9 @@ void capture_process_camera(int x_coord, int y_coord, uint32_t* cnn_buffer, int 
 		release_camera_stream_buffer();
 	}
 
+}
+
+void get_font(int* font)
+{
+  *font = font_1;
 }

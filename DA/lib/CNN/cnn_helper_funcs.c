@@ -13,7 +13,7 @@
 #include "mxc.h"
 #include "camera.h"
 #include "string.h"
-#include "bitmap.h"
+
 
 // ========================================================================================= //
 // ======================================= MACROS ========================================== //
@@ -54,10 +54,10 @@ cnn_output_t output; // the output data of the CNN
 
 static int32_t ml_data[NUM_OUTPUTS]; // output data
 static q15_t ml_softmax[NUM_CLASSES]; // softmax output data
-int font_1 = urw_gothic_12_white_bg_grey;
 
 char buff[TFT_BUFF_SIZE];
 volatile uint32_t cnn_time; // Stopwatch
+int font;
 
 #ifdef CD
 char* class_strings[] = {"DOG","CAT"};
@@ -144,7 +144,7 @@ void run_cnn(cnn_output_t* output)
         // classify the output
         softmax_layer();
 
-        printf("Classification results:\n");
+        // printf("Classification results:\n");
         // might want to average across runs
         for (int i = 0; i < NUM_CLASSES; i++) 
         {
@@ -152,7 +152,7 @@ void run_cnn(cnn_output_t* output)
           digs = (1000 * ml_softmax[i] + 0x4000) >> 15;
           tens = digs % 10; // get the fractional part
           digs = digs / 10; // get the integer part
-          printf("[%7d] -> Class %d: %d.%d%%\n", ml_data[i], i, digs, tens);
+          // printf("[%7d] -> Class %d: %d.%d%%\n", ml_data[i], i, digs, tens);
 
           class_sums[i] += digs;
           if(class_sums[i] > max)
@@ -165,12 +165,12 @@ void run_cnn(cnn_output_t* output)
         cnn_stop();
         MXC_SYS_ClockDisable(MXC_SYS_PERIPH_CLOCK_CNN);
 
-        printf("Approximate inference time: %u us\n\n", cnn_time);
+        // printf("Approximate inference time: %u us\n\n", cnn_time);
     }
     output->output_class = max_i;
     output->percent = max;
-    printf("CLASS: %s\n",class_strings[max_i]);
-    printf("\033[0;0f");
+    // printf("CLASS: %s\n",class_strings[max_i]);
+    // printf("\033[0;0f");
 }
 
 
@@ -187,6 +187,9 @@ void startup_cnn()
     cnn_load_weights(); // Load kernels
     cnn_load_bias();
     cnn_configure(); // Configure state machine
+
+
+    get_font(&font);
 }
 
 
@@ -202,7 +205,7 @@ void show_cnn_output(cnn_output_t* output)
     // {
         memset(buff,32,TFT_BUFF_SIZE);
         MXC_TFT_FillRect(&box,4);
-        TFT_Print(buff, 0, 0, font_1, sprintf(buff, "Class: %s (%d %%)", class_strings[output->output_class], output->percent));
+        TFT_Print(buff, 0, 0, font, sprintf(buff, "Class: %s (%d %%)", class_strings[output->output_class], output->percent));
     // }
     // last_output.output_class = output->output_class; 
 }

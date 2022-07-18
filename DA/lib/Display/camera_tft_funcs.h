@@ -136,4 +136,7 @@ void LCD_Camera_Setup();
     Return: none
 */
 void capture_process_camera(int x_coord, int y_coord, uint32_t* cnn_buffer, int load_cnn);
+
+void get_font(int* font);
+
 #endif

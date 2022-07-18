@@ -14,6 +14,7 @@
 #include "camera_tft_funcs.h"
 #include "cnn_helper_funcs.h"
 #include "pb.h"
+#include "asl_helper_funcs.h"
 
 
 #define SCREEN_W 128 // image output width
@@ -41,11 +42,12 @@ int main()
     cnn_output_t output;
     while (1)
     {
-        while (!PB_Get(0));
+       // while (!PB_Get(0));
         
         // call a run cnn helper func here
         run_cnn(&output);
         show_cnn_output(&output);
+        // update_state();
     }
     
 }
