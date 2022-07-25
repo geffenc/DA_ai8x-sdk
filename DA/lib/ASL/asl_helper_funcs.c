@@ -12,6 +12,7 @@
 // ================================== GLOBAL VARIABLES ===================================== //
 // ========================================================================================= //
 
+#ifdef ASL
 asl_t asl = {NOTHING, 0};
 char letters[27] = {'\0'};
 uint8_t num_letters = 0;
@@ -49,6 +50,7 @@ void update_state(void)
 void display_letters(void)
 {
     static int font = 0;
+    static uint8_t num_del = 0;
     
     // first check if we have room
     if(num_letters == 26)
@@ -60,10 +62,22 @@ void display_letters(void)
     // next check if we want to delete
     if(asl.last_letter == DEL)
     {
+        num_del += 1;
         // check if char buffer already empty
         if(num_letters == 0)
         {
             // printf("char buffer already empty\n");
+            return;
+        }
+
+        // clear all letters
+        if(num_del == 3)
+        {
+            num_del = 0;
+            num_letters = 0;
+            letters[0] = '\0';
+            letters[1] = '\0';
+            MXC_TFT_FillRect(&box,4);
             return;
         }
 
@@ -72,20 +86,30 @@ void display_letters(void)
         num_letters -= 1;
         get_font(&font);
         MXC_TFT_FillRect(&box,4);
-        TFT_Print(letters, 0, 0, font, num_letters);
+        if(num_letters >= 24)
+        {
+            TFT_Print(letters, 0, 0, font, 24);
+            TFT_Print(letters+24, 0, 30, font, num_letters-24);
+        }
+        else
+        {
+            TFT_Print(letters, 0, 0, font, num_letters);
+        }
         // printf("Letters: %s\n", letters);
         MXC_Delay(1000000);
         return;
     }
+    num_del = 0;
 
     // otherwise, display the letter
     letters[num_letters] = tokens[asl.last_letter][0];
     num_letters += 1;
     get_font(&font);
     MXC_TFT_FillRect(&box,4);
-    if(num_letters == 25)
+    if(num_letters >= 24)
     {
-        TFT_Print(letters, 0, 30, font, num_letters);
+        TFT_Print(letters, 0, 0, font, 24);
+        TFT_Print(letters+24, 0, 30, font, num_letters-24);
     }
     else
     {
@@ -94,3 +118,4 @@ void display_letters(void)
     MXC_Delay(1000000);
     // printf("Letters: %s\n", letters);
 }
+#endif

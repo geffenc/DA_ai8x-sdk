@@ -42,12 +42,15 @@ int main()
     cnn_output_t output;
     while (1)
     {
-       // while (!PB_Get(0));
+#ifndef ASL
+    //    while (!PB_Get(0));
         
         // call a run cnn helper func here
         run_cnn(&output);
         show_cnn_output(&output);
-        // update_state();
+#else
+        update_state();
+#endif
     }
     
 }

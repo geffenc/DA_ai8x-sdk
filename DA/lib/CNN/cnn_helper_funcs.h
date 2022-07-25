@@ -9,7 +9,7 @@
 
 extern char* class_strings[];
 
-#define ASL
+#define OFFICE
 
 #ifdef CD
 typedef enum
